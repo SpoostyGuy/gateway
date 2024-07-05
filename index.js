@@ -10,7 +10,8 @@ app.get('/', async function(req, res) {
 })
 app.post('/establishSession', async function(req, res) {
     if (req.body.localId != undefined && req.body.sendId != undefined) {
-        connectionMsgQueue[req.body.sendId] = ['-- GATEWAY CONNECTION --']
+        connectionMsgQueue[req.body.sendId] = []
+        connectionMsgQueue[req.body.localId] = []
         connectedId[req.body.localId] = req.body.sendId
         return res.json({
             'established': true
