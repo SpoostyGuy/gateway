@@ -1,13 +1,39 @@
 var express = require('express')
+var randomId = require('random-id')
 var app = express()
 app.use(express.json())
 
 var connectionMsgQueue = {}
 var connectedId = {}
+var credentialsExist = []
 
-app.get('/', async function(req, res) {
-    return res.send('<h1>Gateway server</h1>')
+app.post('/establishCredentials', async function(req, res) {
+    var clientId = undefined
+    while (true) {
+        var id = randomId(24, 'aA0')
+        if (credentialsExist.includes(id)) {
+        } else {
+            clientId = id
+            break
+        }
+    }
+    credentialsExist.push(clientId)
+    var serverId = undefined
+    while (true) {
+        var id = randomId(24, 'aA0')
+        if (credentialsExist.includes(id)) {
+        } else {
+            serverId = id
+            break
+        }
+    }
+    credentialsExist.push(serverId)
+    return res.status(200).send({
+        clientId: clientId,
+        serverId: serverId
+    })
 })
+
 app.post('/establishSession', async function(req, res) {
     if (req.body.localId != undefined && req.body.sendId != undefined) {
         connectionMsgQueue[req.body.sendId] = ['-- CONNECTED TO SERVER --']
