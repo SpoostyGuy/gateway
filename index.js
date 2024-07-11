@@ -36,7 +36,7 @@ app.post('/establishCredentials', async function(req, res) {
 
 app.post('/establishSession', async function(req, res) {
     if (req.body.localId != undefined && req.body.sendId != undefined) {
-        connectionMsgQueue[req.body.sendId] = ['-- CONNECTED TO SERVER --']
+        connectionMsgQueue[req.body.sendId] = []
         connectionMsgQueue[req.body.localId] = []
         connectedId[req.body.localId] = req.body.sendId
         return res.json({
